@@ -2,11 +2,8 @@ import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import json 
-
-intents = discord.Intents.default()
-intents.members = True
-intents.message_content = True
-bot = commands.Bot(command_prefix= '[', intents = intents)
+import os
+import asyncio
 
 with open('setting.json', 'r', encoding="utf8") as jfile:
     jdata = json.load(jfile)
@@ -24,8 +21,9 @@ class Event(Cog_Extension):
 
     @commands.Cog.listener()
     async def on_message(self, msg):
-        if msg.content == 'apple':
-            await msg.channel.send('hi')
+        if msg.content in jdata['keyword'] and msg.author != self.bot.user:
+            await msg.channel.send('apple')
+            
 
 async def setup(bot):
     await bot.add_cog(Event(bot))
